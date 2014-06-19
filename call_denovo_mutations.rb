@@ -162,8 +162,17 @@ def filterVCF(vcf, settings, samples)
 #         $stderr.puts gt
         
 
-        pl = samples[sid][:call][fields[:pl]].split(',')
-        ad = samples[sid][:call][fields[:ad]].split(',')
+        if plf = samples[sid][:call][fields[:pl]] 
+          pl = plf.split(',')
+        else
+          next
+        end
+        if adf = samples[sid][:call][fields[:ad]]
+          ad = adf.split(',')
+        else
+          next
+        end
+
         if (indelflag == 0 and (pl[0].to_i < settings["--minPL"] or ad[1].to_i < settings["--minAD"] )) or (indelflag == 1 and (pl[0].to_i < settings["--minPLIndel"] or ad[1].to_i < settings["--minADIndel"] ))
         #  $stderr.puts "case not mut"
           next
