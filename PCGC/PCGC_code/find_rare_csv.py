@@ -66,7 +66,7 @@ for e in  os.listdir('afterannovar'):
                 ExonicFunc_index = index
             if e == 'LJB_SIFT_Pred':
                 LJB_sift = index
-            if e == 'LJB_PolyPhen2':
+            if e == 'LJB_PolyPhen2_Pred':
                 LJB_pp2 = index
             index += 1
 

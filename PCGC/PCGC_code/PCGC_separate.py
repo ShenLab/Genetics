@@ -1,9 +1,9 @@
-def check_rare(l):# find variant with propability < 1% in esp
+def check_rare(l):# find variant with propability < 0.5% in esp
     for e in l:
         if 'esp.MAF' in e:
             
             freq = float(e.split(',')[-1])
-            if freq > 1:                                                                                                       
+            if freq > 0.5:
                 return False
             else:
                 return True
@@ -92,8 +92,7 @@ for line in f:
         else:
             head_f = line[1:].split()[:9]
             index = line[1:].split()[9:]
-            print index[100:103]
-            index = index[:103]+['1-188001-02']+index[103:]
+
             n = len(index)/3
             f = [open("temp/sample_%s.vcf" % index[i*3], "w") for i in range(n)]
             for i in range(n):
