@@ -149,6 +149,7 @@ def filterVCF(vcf, settings, samples)
 #      exclusionarray = []
       
       mut = []
+      ada = []
       probands.each do |sid|
         #        $stderr.puts sid
       #  $stderr.puts "#{sid}"
@@ -156,12 +157,12 @@ def filterVCF(vcf, settings, samples)
         gt = samples[sid][:call][fields[:gt]] 
 
         if samples[sid][:call][fields[:gt]] == "0/0" or samples[sid][:call][fields[:gt]] == './.'
-#          $stderr.puts "case not 0/1"
+          #          $stderr.puts "case not 0/1"
           next
         end
 #         $stderr.puts gt
         
-
+        
         if plf = samples[sid][:call][fields[:pl]] 
           pl = plf.split(',')
         else
@@ -169,6 +170,7 @@ def filterVCF(vcf, settings, samples)
         end
         if adf = samples[sid][:call][fields[:ad]]
           ad = adf.split(',')
+
         else
           next
         end
@@ -198,13 +200,14 @@ def filterVCF(vcf, settings, samples)
   #      $stderr.puts exclusionflag
         if exclusionflag == 0
           mut << sid
+          ada << adf
         end
       end
         
       
       if mut.size > 0 
       #  o.puts "#{mut.join(',')}\t#{line}"
-        str = cols[0..6].join("\t") + "\t" + mut.join(",") + ";" + cols[7..-1].join("\t")
+        str = cols[0..6].join("\t") + "\t" + mut.join(":") + ";" + ada.join(":")  + ";" + cols[7..-1].join("\t")
         o.puts str
     #  else
     #    e.puts line
