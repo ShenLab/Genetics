@@ -2,7 +2,7 @@ import csv
 import os
 
 def check_rare(line):
-    # find variant with propability < 1% in 1000 Genomes and GO-ESP
+    # find variant with propability < 0.5% in 1000 Genomes and GO-ESP
     esp6500si_all = line[esp_index]
     kg = line[kg_index]
     
@@ -11,20 +11,20 @@ def check_rare(line):
             return True
         else:
             kg = float(kg)
-            if kg > 0.01:
+            if kg > 0.005:
                 return False
             else:
                 return True
     else:
         esp6500si_all = float(esp6500si_all)
-        if esp6500si_all > 0.01:
+        if esp6500si_all > 0.005:
             return False
         else:
             if kg == 'NA':         
                 return True
             else:
                 kg = float(kg)
-                if kg > 0.01:
+                if kg > 0.005:
                     return False
                 else:
                     return True        
@@ -74,8 +74,9 @@ for e in  os.listdir('afterannovar'):
 
 
         for line in r:
-            if check_rare(line) and check_deleterious(line) :
-                w.writerow(line)
+            if line[-1].split('\t')[6] == 'PASS':
+                if check_rare(line) and check_deleterious(line) :
+                    w.writerow(line)
         
             
 
