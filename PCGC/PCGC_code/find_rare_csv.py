@@ -52,7 +52,7 @@ for e in  os.listdir('afterannovar'):
     if e.endswith(".csv"):
         f1 = open('afterannovar/'+e,'Ur')
         r = csv.reader(f1)
-        f2 = open('PCGC_rare_csv/'+e[:-3]+'rare.csv','wb')
+        f2 = open('PCGC_rare_csv/'+e[:-18]+'rare.csv','wb')
         w = csv.writer(f2)
         head = r.next()
         w.writerow(head)
