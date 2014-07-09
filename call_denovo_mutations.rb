@@ -65,12 +65,13 @@ def filterVCF(vcf, settings, samples)
   probands = []
 #   $stderr.puts samples
   samples.each_key do |s|
-    if samples[s][:pheno] == "2" and samples[s][:parents].size > 0 
+    if samples[s][:pheno] == "2" and samples[s][:parents].size == 2
       probands << s
     end
   end
 
-  $stderr.puts "Probands: #{probands.join("\t")}"
+  $stderr.puts "Number of complete trios:  #{probands.size}"
+  $stderr.puts "All probands: #{probands.join("\t")}"
    
   File.new(vcf, 'r').each do |line|
     if line.match("^#")
@@ -235,7 +236,7 @@ def countSamples(phenotype, vcf)
         k = k + 1
         samples[sID] = {:col => k, :fID => nil, :pheno => "0" }
       end
-    elsif n > 1000
+    elsif n > 2000
       break
     end
   end
