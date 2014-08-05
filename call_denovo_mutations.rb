@@ -19,12 +19,12 @@ require 'getoptlong'
 def main 
   settings = {}
   settings["--minAD"] = 6  ## min # of reads carrying alternative allele for SNV
-  settings["--minADIndel"] =  6  ## min # of reads carrying alternative allele for indel
+  settings["--minADIndel"] =  8  ## min # of reads carrying alternative allele for indel
   settings["--minDP"] = 12  # min depth in parents
   settings["--phenotype"] = ""
   settings["--minPL"] = 70
   settings["--minPLP"] = 30
-  settings["--minPLIndel"] = 70
+  settings["--minPLIndel"] = 80
   settings["--maxAAF"] = 0.015
   settings["--maxFreq"] = 0.001
   settings["--maxAC"]  = 3
