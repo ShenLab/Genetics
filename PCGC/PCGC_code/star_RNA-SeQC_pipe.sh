@@ -9,7 +9,6 @@ reference=$gsnap_dir/hg19.fa
 bam_base=`basename $bam .bam`
 sample=${bam_base}
 reheaderbam=${bam_base}".reheader.bam"
-echo "sample: "$sample
 
 if [[ ! -e $reheaderbam.bai ]]; then
 
@@ -26,7 +25,7 @@ echo perform RNA-SeQC..
 
 
 
-## get the summary of the mapping quality
+## get a summary of the mapping quality
 cd RNA-SeQC
 
 summary=../../rnaseqc.info
@@ -58,5 +57,5 @@ if [[ -e metrics.tsv ]]; then
     rm -f $reheaderbam.bai
 
 else
-    echo -e "$ID\tfailure on RNA-SeQC" >> $summary
+    echo -e "$ID\tfails on RNA-SeQC" >> $summary
 fi

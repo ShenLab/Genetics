@@ -3,7 +3,7 @@
 bam=$1
 gtf=$2
 dir=$3
-out="ensembleCufflinksout"
+out="Cufflinksout"
 
 if [ ! -d $out ]; then mkdir -p $out; fi
 if [ ! -d $dir ]; then mkdir -p $dir; fi

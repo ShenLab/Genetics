@@ -9,7 +9,7 @@ read=`zcat -d $R1| head | tail -n +10`
 readLength=`echo ${#read}`
 echo "fastq read length: "$readLength
 
-out="StarBamOption"
+out="StarBam"
 if [ ! -d $out ] ; then mkdir -p $out; fi
 
 R1_base=`basename $R1`
