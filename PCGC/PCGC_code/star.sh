@@ -4,7 +4,7 @@
 R1=$1
 R2=$2
 
-## check the length of the read to choose star configuration
+## check the length of reads to choose star configuration
 read=`zcat -d $R1| head | tail -n +10`
 readLength=`echo ${#read}`
 echo "fastq read length: "$readLength
