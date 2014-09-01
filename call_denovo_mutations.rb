@@ -123,6 +123,10 @@ def filterVCF(vcf, settings, samples)
           freq = [$1.to_f, freq].max
         elsif item =~ /^ESP\d+\.score\=(\S+)/
           freq = [$1.to_f, freq].max
+        elsif item =~ /^ESPfreq\=(\S+)/
+          freq = [$1.to_f, freq].max
+        elsif item =~ /^1KGfreq\=(\S+)/
+          freq = [$1.to_f, freq].max
         elsif item =~ /^AC\=(\S+)/
           alleleCounts = $1.to_i
         end
