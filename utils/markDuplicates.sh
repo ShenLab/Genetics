@@ -24,7 +24,7 @@ fi
 if [[ $input != "" ]]; then
     samtools view -b $input | bammarkduplicates2    O=$output markthreads=$threads
 else 
-    bammarkduplicates2 I=$input O=$output
+    bammarkduplicates2 I=$input O=$output markthreads=$threads
 fi
 
 samtools index $output
