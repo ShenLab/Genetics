@@ -1,13 +1,15 @@
 #!/bin/bash
 #$ -cwd
 
-USAGE="Usage: $0 -i <input BAM> -o <output BAM> \n"
+USAGE="Usage: $0 -i <input BAM> -o <output BAM> [-t n_threads]\n"
 
+threads=1
 
-while getopts i:o:h opt
+while getopts i:o:t:h opt
 do case "$opt" in
 	i)      input="$OPTARG";;
 	o)      output="$OPTARG";;
+	t)      threads="$OPTARG";;
 	h)      echo $USAGE
 	    exit 1;;
     esac
@@ -20,7 +22,7 @@ if [[ $output == "" ]]; then
 fi
 
 if [[ $input != "" ]]; then
-    samtools view -b $input | bammarkduplicates2    O=$output
+    samtools view -b $input | bammarkduplicates2    O=$output markthreads=$threads
 else 
     bammarkduplicates2 I=$input O=$output
 fi
