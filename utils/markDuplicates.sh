@@ -18,15 +18,12 @@ done
 export PATH=$PATH:$HOME/data/usr/bin/
 
 if [[ $output == "" ]]; then
-    output="markDup.bam"
+    output=$input."MarkDup.bam"
 fi
 
-if [[ $input != "" ]]; then
-    samtools view -b $input | bammarkduplicates2    O=$output markthreads=$threads
-else 
-    bammarkduplicates2 I=$input O=$output markthreads=$threads
-fi
 
+bammarkduplicates2 I=$input O=$output markthreads=$threads rewritebam=1 
+ 
 samtools index $output
 samtools flagstat $output > $output.flagstat
 
