@@ -24,6 +24,7 @@ groups=`groups $USER | awk '{print $3}' | tr '[a-z]' '[A-Z]'`
 
 HTSCMD="/ifs/data/c2b2/ngs_lab/ngs/usr/bin/htscmd"
 
+export PATH=$PATH:$HOME/usr/bin/
 
 USAGE="Usage: $0 -i foo_1.fastq  -s global_setting [ -p foo_2.fastq ] [ -k minSeedLength] [ -w  bandWidth ] [ -y ID] [ -z readgroup] [ -n sampleName] [ -f platform] [-o output.bam] \n"
 
