@@ -119,7 +119,7 @@ echo -e "@PG\tID:bwa\tVN:$bwaVersion\tCL:$BWA mem -T $minScore -k $minSeed -w $b
 
 $SAMTOOLS sort -@ $threads -l 6  $output.bam $output.temp
 
-$SAMTOOLS reheader $output.bam.header $output.temp.bam | bammarkduplicates2    O=$output.bam 
+$SAMTOOLS reheader $output.bam.header $output.temp.bam | bammarkduplicates2    O=$output.bam rewritebam=1 
 
 # $SAMTOOLS reheader $output.bam.header $output.temp.bam > $output.bam 
  

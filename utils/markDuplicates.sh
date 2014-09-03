@@ -27,4 +27,3 @@ bammarkduplicates2 I=$input O=$output markthreads=$threads rewritebam=1
 samtools index $output
 samtools flagstat $output > $output.flagstat
 
-
