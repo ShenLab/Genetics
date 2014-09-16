@@ -19,13 +19,13 @@ require 'getoptlong'
 def main 
   settings = {}
   settings["--minAD"] = 6  ## min # of reads carrying alternative allele for SNV
-  settings["--minADIndel"] =  8  ## min # of reads carrying alternative allele for indel
+  settings["--minADIndel"] =  6  ## min # of reads carrying alternative allele for indel
   settings["--minDP"] = 12  # min depth in parents
   settings["--phenotype"] = ""
-  settings["--minPL"] = 70
+  settings["--minPL"] = 60
   settings["--minPLP"] = 30
-  settings["--minPLIndel"] = 80
-  settings["--maxAAF"] = 0.015
+  settings["--minPLIndel"] = 70
+  settings["--maxAAF"] = 0.03
   settings["--maxFreq"] = 0.001
   settings["--maxAC"]  = 3
 
@@ -65,13 +65,12 @@ def filterVCF(vcf, settings, samples)
   probands = []
 #   $stderr.puts samples
   samples.each_key do |s|
-    if samples[s][:pheno] == "2" and samples[s][:parents].size == 2
+    if samples[s][:pheno] == "2" and samples[s][:parents].size > 0 
       probands << s
     end
   end
 
-  $stderr.puts "Number of complete trios:  #{probands.size}"
-  $stderr.puts "All probands: #{probands.join("\t")}"
+  $stderr.puts "Probands: #{probands.join("\t")}"
    
   File.new(vcf, 'r').each do |line|
     if line.match("^#")
@@ -122,10 +121,6 @@ def filterVCF(vcf, settings, samples)
         if item =~ /^1KG\.score\=(\S+)/
           freq = [$1.to_f, freq].max
         elsif item =~ /^ESP\d+\.score\=(\S+)/
-          freq = [$1.to_f, freq].max
-        elsif item =~ /^ESPfreq\=(\S+)/
-          freq = [$1.to_f, freq].max
-        elsif item =~ /^1KGfreq\=(\S+)/
           freq = [$1.to_f, freq].max
         elsif item =~ /^AC\=(\S+)/
           alleleCounts = $1.to_i
@@ -240,7 +235,7 @@ def countSamples(phenotype, vcf)
         k = k + 1
         samples[sID] = {:col => k, :fID => nil, :pheno => "0" }
       end
-    elsif n > 2000
+    elsif n > 1000
       break
     end
   end
