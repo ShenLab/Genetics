@@ -50,7 +50,7 @@ def check_denovo(l,indel):
                 Mother_DP = int(Mother[2])
 
             if indel:
-                return proband_GQ >= 70 and Father_GQ >= 80 and Mother_GQ >= 80 and proband_AD >= 8 and Father_DP >=12 and Mother_DP >= 12
+                return proband_GQ >= 80 and Father_GQ >= 30 and Mother_GQ >= 30 and proband_AD >= 8 and Father_DP >=12 and Mother_DP >= 12
             else:
                 return proband_GQ >= 70 and Father_GQ >= 30 and Mother_GQ >= 30 and proband_AD >= 6 and Father_DP >=12 and Mother_DP >= 12
         else:
