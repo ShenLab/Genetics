@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'getoptlong'
+require 'zlib'
 
 ### 
 
@@ -13,8 +14,6 @@ require 'getoptlong'
 # 5. max alternative allele fraction in parents
 # 6. max allele frequency in populations: reference panel AND within-cohort
 # 7. 
-
-
 
 def main 
   settings = {}
@@ -33,9 +32,10 @@ def main
   vcf = optHash["--vcf"]
   
   settings["--output"] = vcf  
+  settings["--header"] = vcf
   settings.keys.sort.each do |s|
     if optHash.key?(s) 
-      if s == "--phenotype"  or s == "--output"
+      if s == "--phenotype"  or s == "--output" or s == "--header"
         settings[s] = optHash[s]
       else
         settings[s] = optHash[s].to_f
@@ -43,8 +43,10 @@ def main
     end
   end
   
-  samples=countSamples(settings["--phenotype"], vcf)
-#  $stderr.puts samples
+
+  samples=countSamples(settings["--phenotype"], settings["--header"])
+
+    #  $stderr.puts samples
   
   filterVCF(vcf,settings,samples)  # gt: gene -> pos -> sample -> genotype, 
 
@@ -72,17 +74,28 @@ def filterVCF(vcf, settings, samples)
 
   $stderr.puts "Number of complete trios:  #{probands.size}"
   $stderr.puts "All probands: #{probands.join("\t")}"
-   
-  File.new(vcf, 'r').each do |line|
+
+  if vcf.match(/.gz$/)
+    vio = Zlib::GzipReader.new(File.open(vcf))
+  else
+    vio = File.new(vcf, 'r')
+  end
+  
+#  while !vio.eof?
+#  File.new(vcf, 'r').each do |line|
+  while line = vio.gets(sep="\n")
     if line.match("^#")
 #      if line.match("^#CHROM") 
 #        o.puts "\#MutSample\t#{line}"
 #      else
-      o.puts line
+#      o.puts line
 #      end
 #      e.puts line
+ #     $stderr.puts line.length
+    	1
     else
-      cols=line.chomp.split(/\t/)
+      cols=line.chomp.split(/\s+/)
+      $stderr.puts cols.size
       ref, alt, qual, pass, info  = cols[3], cols[4],  cols[5].to_f, cols[6], cols[7].split(';')
       #10      61852   .       T       C       999     .       DP=76;AF1=0.5;AC1=2;DP4=9,17,11,15;MQ=40;FQ=999;PV4=0.78,0.17,0.42,0.043        GT:PL:DP:SP:GQ  0/1:215,0,221:28:4:99   0/1:219,0,208:24:0:99
       #10      68575   .       C       T       999     .       DP=72;AF1=1;AC1=4;DP4=4,6,24,25;MQ=29;FQ=-60.5;PV4=0.73,1,1,1   GT:PL:DP:SP:GQ  1/1:235,29,0:31:4:63    1/1:239,41,0:28:2:75
@@ -219,6 +232,7 @@ def filterVCF(vcf, settings, samples)
       end
     end
   end
+  vio.close
   o.close
 
 end
@@ -231,19 +245,36 @@ def countSamples(phenotype, vcf)
 # 1018 WB13 0 0 0 2
   samples = {}
   n, k = 0, 0
-  File.new(vcf, 'r').each do |line|
-    n += 1
+  
+#  $stderr.puts vcf
+  
+  if vcf.match(/.gz$/)
+    vio = Zlib::GzipReader.new(File.open(vcf))
+  else
+    vio = File.new(vcf, 'r')
+  end
+
+  flag = 0
+  while !vio.eof? and flag == 0
+#  File.new(vcf, 'r').each do |line|
+    line = vio.gets(sep="\n")
     if line.match("^#CHROM") 
+ #     $stderr.puts line
       cols = line.chomp.split(/\s+/)
+ #     $stderr.puts cols[-5..-1].join(";")
+ #     $stderr.puts cols.size
       k = 8
       cols[9..-1].each do |sID|
         k = k + 1
         samples[sID] = {:col => k, :fID => nil, :pheno => "0" }
       end
-    elsif n > 2000
-      break
+      flag = 1
     end
   end
+  
+  vio.close
+
+#  $stderr.puts samples.size
 
   File.new(phenotype, 'r').each do |line|
     next if line.match(/^#/)
@@ -260,7 +291,7 @@ def countSamples(phenotype, vcf)
     end
   end
 
-#  $stderr.puts samples
+ #  $stderr.puts samples.size
 
   samples.each_key do |sID|
     if samples[sID][:pheno] == "2"  ## case / proband
@@ -290,6 +321,7 @@ def getopt
                         ["--minPLP", "-l", GetoptLong::OPTIONAL_ARGUMENT],
                         ["--maxAAFSigma", "-a", GetoptLong::OPTIONAL_ARGUMENT], 
                         ["--output", "-o", GetoptLong::OPTIONAL_ARGUMENT],
+                        ["--header", "-H", GetoptLong::OPTIONAL_ARGUMENT],
                         ["--help", "-h", GetoptLong::NO_ARGUMENT]
                         )
   optHash = {}
@@ -313,7 +345,7 @@ def getopt
     $stderr.puts "       --maxFreq [-f] FLOAT   [0.001] max allele frequency in 1kG or GO-ESP"
     $stderr.puts "       --maxAAF [-a] FLOAT    [0.03] max ratio of alternative allele reads in control/parents " 
     $stderr.puts "       --output [-o] prefix   [stdout] prefix of output file; print to stdout by default"
-    
+    $stderr.puts "       --header [-H] header   [] optional VCF CHROM header"
     $stderr.puts "       --help  [-h]           show help information"
     exit
   end
