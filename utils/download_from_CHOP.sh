@@ -6,9 +6,8 @@ user=$2
 
 for f in `cat $list`
 do 
-g="/pcgc"$f
+# g="/pcgc"$f
 
-movedat -a 3 -b 1048576 -K $user@resrhdxp01.research.chop.edu:$g ./
-
+movedat -a 3 -b 1048576 -K $user@resrhdxp01.research.chop.edu:$f ./
 done
 
