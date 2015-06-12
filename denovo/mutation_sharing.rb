@@ -10,19 +10,34 @@ def main
 
  #  $stderr.puts groups.keys.size
   s = countSharing(mutfile, groups)
-  jaccardIndex(s, groups) 
+  ji = jaccardIndex(s, groups) 
 #  s.each do |pair, n|
 #    puts "#{pair}\t#{n}"
 #  end
 
+  puts ji
+  ji.each do |pair, v|
+    puts "#{pair}\t#{v}\t#{s[pair]}"
+  end
 end
 
 def jaccardIndex(sharing, groups)
-    g = groups.values
-    g.each do ||
+  ji = {}
+  g = []
+  for i in 0..groups.values.max
+    g << i
+  end
 
-    sharing.each_key do |pair, |
-
+  g.each do |g1|
+    g.each do |g2|
+      next if g2 <= g1
+      pair = "#{g1}-#{g2}"
+   #   puts sharing[pair]
+      ji[pair] = sharing[pair].to_f / (sharing["#{g1}-#{g1}"] + sharing["#{g2}-#{g2}"] - sharing[pair])
+    end
+  end
+      
+  return ji
 end
 
 def countSharing(mutfile, groups)
@@ -42,7 +57,7 @@ def countSharing(mutfile, groups)
     cid, gene, type  = cols[0], cols[8], cols[9]
 #    puts type
     mut[gene] = {} unless mut.key?(gene)
-    if type != "silent" and type  != "." and groups.key?(cid)
+    if type != "silent" and type != "Bmis" and type != "Dmis"  and type  != "." and groups.key?(cid)
       g = groups[cid]
       if mut[gene].key?(g)
         mut[gene][g] += 1
