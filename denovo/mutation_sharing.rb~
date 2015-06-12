@@ -1,0 +1,35 @@
+## find shared genes that are mutated among different groups of cases
+
+def main
+  phenofile = ARGF[0]
+  mutfile = ARGF[1]
+
+  groups = readPheno(phenofile)
+
+
+
+
+end
+
+def readPheno(p)
+  g = {}
+  File.new(p, 'r').each do |line|
+    cols = line.chomp.split(/\s+/)[1..3]
+    if line=~ /^Case/ # header
+      pheno = cols[1..-1] 
+      
+      # permute
+      for i in 0..(pheno.size-2)
+        for j in (i+1)..(pheno.size-1)
+          g1 = pheno[i]
+          g2 = pheno[j]
+          g["#{i}_#{j}"] = "#{g1}_#{g2}"
+        end
+      end
+    else
+      cid, 
+
+end
+
+
+main()
