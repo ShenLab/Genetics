@@ -10,10 +10,18 @@ def main
 
  #  $stderr.puts groups.keys.size
   s = countSharing(mutfile, groups)
-  
-  s.each do |pair, n|
-    puts "#{pair}\t#{n}"
-  end
+  jaccardIndex(s, groups) 
+#  s.each do |pair, n|
+#    puts "#{pair}\t#{n}"
+#  end
+
+end
+
+def jaccardIndex(sharing, groups)
+    g = groups.values
+    g.each do ||
+
+    sharing.each_key do |pair, |
 
 end
 
