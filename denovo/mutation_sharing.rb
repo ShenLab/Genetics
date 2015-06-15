@@ -15,10 +15,33 @@ def main
 #    puts "#{pair}\t#{n}"
 #  end
 
-  puts ji
+#  puts ji
   ji.each do |pair, v|
-    puts "#{pair}\t#{v}\t#{s[pair]}"
+    $stderr.puts "#{pair}\t#{v}\t#{s[pair]}"
   end
+
+  ## input for heatmap
+
+  m = groups.values.max
+  
+  
+  for i in 0..m 
+  #  print "#{i}"
+    for j in 0..m
+      if j > i 
+        pair = "#{i}-#{j}"
+        print "\t#{ji[pair]}"
+      elsif j == i
+        print "\t1"
+      else
+        pair = "#{j}-#{i}"
+        print "\t#{ji[pair]}"
+      end
+    end
+    print "\n"
+  end
+  
+
 end
 
 def jaccardIndex(sharing, groups)
@@ -57,7 +80,7 @@ def countSharing(mutfile, groups)
     cid, gene, type  = cols[0], cols[8], cols[9]
 #    puts type
     mut[gene] = {} unless mut.key?(gene)
-    if type != "silent" and type != "Bmis" and type != "Dmis"  and type  != "." and groups.key?(cid)
+    if type != "silent" and type != "nonframeshift" and type != "Bmis"   and type  != "." and groups.key?(cid)
       g = groups[cid]
       if mut[gene].key?(g)
         mut[gene][g] += 1
