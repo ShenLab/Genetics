@@ -1,5 +1,5 @@
-## Usage: python fdrsplit.py external_DD.txt <lower bound> <upper bound>
-## Purpose: splits external_DD.txt gene list into smaller gene lists based on FDR bins
+## Usage: python split_fdr.py external_DD.txt <lower bound> <upper bound>
+## Purpose: splits external_DD.txt genes file into a smaller gene list based on FDR cutoffs
 ## Output: prints list of gene symbols with FDR falling in the specified range
 
 import sys
