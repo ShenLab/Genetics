@@ -1,9 +1,10 @@
-## Usage: python highrisk.py cases_metaSVM.csv phenotypecombined.csv phenotypes_extracardiac_mb_wkc.csv riskgenes.txt <cutoff> > highriskannos.csv
+## Usage: python highrisk.py cases_metaSVM.csv phenotypecombined.csv phenotypes_extracardiac_mb_wkc.csv riskgenes.txt <cutoff> gender_phenotypes.parsed.txt > highriskannos.csv
 ## Purpose: Generates annotation table containing the following information for each patient:
 ## 			1) # of damaging (LGD/Deleterious Missense) mutations in genes in riskgenes.txt (default: 0)
 ## 			2) extracardiac manifestation major category posterior probability of NDD (default: 0, ranges [0,1])
-## 			3) diagnosis status (1: NDD, 0: non-NDD, -1: uncertain)
-## Output: table of annotations with rows: subjectID, #damaging mutations, #extracardiac posterior, NDD status
+## 			3) sex of patient (0 = Female, 1 = Male)
+##			4) diagnosis status (1: NDD, 0: non-NDD, -1: uncertain)
+## Output: table of annotations with rows: subjectID, #damaging mutations, #extracardiac posterior, sex, NDD status
 
 import sys
 
@@ -12,6 +13,7 @@ phenf = open(sys.argv[2],'r')
 extraf = open(sys.argv[3],'r')
 genef = open(sys.argv[4],'r')
 cutoff = sys.argv[5]
+sexf = open(sys.argv[6],'r')
 
 ## process risk genes file
 tmp = []
@@ -19,6 +21,17 @@ for line in genef:
 	tmp.append(line.strip())
 genef.close()
 genes = list(set(tmp)) # list of unique risk genes
+
+## process sex file
+sexd = dict()
+for line in sexf:
+	tmp = line.strip().split()
+	sex = 0
+	if tmp[1] == "M":
+		sex = 1
+	sexd[tmp[0]] = sex # 0 = Female, 1 = Male
+sexf.close()
+print len(sexd)
 
 ## process phenotypes (diagnosis) file
 phend = dict()
@@ -123,18 +136,27 @@ mutf.close()
 ## generate annotations
 counts = [0,0,0]
 for pt in anno:
-	damagingct = 0
-	mcposterior = anno[pt][2]
-	ndd = anno[pt][3]
-	mclist = anno[pt][1]
+	if pt in sexd:
+		sex = sexd[pt]
+	else:
+		sex = -1
+	damagingct = 0 # number of damaging mutations in risk gene list genes
+	mcposterior = anno[pt][2] # posterior p(NDD) for extracardiac major category
+	ndd = anno[pt][3] # NDD diagnosis
+	mclist = anno[pt][1] # list of major categories
+	# identify patients with head morphology related extracardiac manifestations
+	headcats = ["Nose", "Ear", "Eye", "Head", "Neck", "Mouth", "Palate", "Dysmorphic.Facies"]
+	headmorphct = len(list(set(headcats).intersection(mclist)))
 	lofdmisgenes = anno[pt][0][0] + anno[pt][0][1]
 	for g in lofdmisgenes:
 		if g in genes:
 			damagingct += 1
-	print ','.join([pt, str(damagingct), str(mcposterior), str(ndd)])
-	'''
-	if damagingct > 0 and mcposterior >= float(cutoff):
-		print ','.join([pt, str(damagingct), str(mcposterior), str(ndd)])
+	#print ','.join([pt, str(damagingct), str(mcposterior), str(sex), str(ndd)])
+	#'''
+	#if damagingct > 0 and mcposterior >= float(cutoff) and sex == 1 and headmorphct > 0:
+	#if damagingct > 0 and mcposterior >= float(cutoff) and headmorphct > 0:
+	if damagingct > 0 and headmorphct > 0:
+		print ','.join([pt, str(damagingct), str(mcposterior), str(sex), str(headmorphct), str(ndd)])
 		if ndd == 1:
 			counts[0] += 1
 		elif ndd == 0:
@@ -142,4 +164,4 @@ for pt in anno:
 		elif ndd == -1:
 			counts[2] += 1
 print counts
-'''
+#'''
