@@ -18,7 +18,7 @@ end
 def addGeneNameID(input, transcripts)
   File.new(input, "r").each do |line|
     if line =~ /^target/  # header
-      puts "#{line.chomp}\tGeneID\t#GeneName"
+      puts "#{line.chomp}\tGeneID\tGeneName"
     else
       cols = line.chomp.split(/\s+/)
       tid = cols[0]
