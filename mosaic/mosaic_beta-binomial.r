@@ -162,7 +162,8 @@ ADfile = args[1]
 a = read.table(ADfile, header=T)
 a = a[!is.na(a[,4]), ]
 
-tsnv = fitReadCounts(a[a[,1] == "SNV", ])
+tsnv = fitReadCounts(a) 
+# tsnv = fitReadCounts(a[a[,1] == "SNV", ])
 #tindel = fitReadCounts(a[a[,1] == "INDEL", ])
 # print(t, row.names = FALSE)
 cat(tsnv, sep="\n")

@@ -6,13 +6,13 @@
 
 def main
   vcf = ARGV[0]
-  codingOnly = ARGV[1]
+  minGQ = ARGV[1]
 
-  codingSwitch = 1
-  if codingOnly != nil and codingOnly.to_i <= 0 ## 
-    codingSwitch = -1
+  if minGQ == nil 
+    minGQ = 40
+  else
+    minGQ = minGQ.to_i
   end
-
 
   sid = [] # sample array
 #  indel =0 
@@ -22,7 +22,7 @@ def main
 #  while line=ARGF.gets do 
   File.new(vcf, 'r').each do |line|
     next if line.match(/^\##/)
-    $stderr.puts line
+   #  $stderr.puts line
     cols=line.chomp.split(/\s+/)
     if line.match(/^#CHROM/)  # header
       sampleCols = []
@@ -51,7 +51,7 @@ def main
 
       fa = fields.split(":")
       i = 0
-      indexGT, indexAD, indexDP = 0, 1, 2
+      indexGT, indexAD, indexDP, indexGQ = 0, 1, 2, 3
       fa.each do |f|
         if f == "GT"
           indexGT = i
@@ -59,15 +59,16 @@ def main
           indexAD = i
         elsif f == "DP"
           indexDP = i
-       
+        elsif f == "GQ"
+          indexGQ = i
         end
         i += 1
       end
       
       gt.each do |genotypeinfo|
-        genotypeFileds = genotypeinfo.split(":")
-        genotype, ad = genotypeFileds[indexGT], genotypeFileds[indexAD].split(',')
-        if genotype == '0/1'  ## het
+        genotypeFields = genotypeinfo.split(":")
+        genotype, ad, gq = genotypeFields[indexGT], genotypeFields[indexAD].split(','), genotypeFields[indexGQ].to_i
+        if genotype == '0/1' and gq >= minGQ  ## het
           outputline << "#{ad[0]}\t#{ad[1]}\t"
         else
           outputline << "NA\tNA\t"
