@@ -109,8 +109,8 @@ fitReadCounts <- function(a) {
 # 	text(z$N, z$alt/z$N, label = z$gene, col='blue', cex=0.6, adj=-0.2)
 
 	# write.table(z, "genes.p.lt.0.005.txt", quote=F)
-	return(mtheta)
-
+# 	return(mtheta)
+	return(results)
 }
 
 
@@ -162,10 +162,13 @@ ADfile = args[1]
 a = read.table(ADfile, header=T)
 a = a[!is.na(a[,4]), ]
 
-tsnv = fitReadCounts(a) 
+results = fitReadCounts(a) 
 # tsnv = fitReadCounts(a[a[,1] == "SNV", ])
 #tindel = fitReadCounts(a[a[,1] == "INDEL", ])
 # print(t, row.names = FALSE)
+
+results = results[results$N > 10 & results$N < 150, ]
+tsnv = sum(results$m * results$theta) / sum(results$m) ## weighted mean of theta
 cat(tsnv, sep="\n")
 
 ## todo:
