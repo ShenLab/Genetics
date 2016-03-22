@@ -1,5 +1,5 @@
 library("bbmle")
-library(emdbook) 
+library("emdbook") 
 
 
 # MODEL 
