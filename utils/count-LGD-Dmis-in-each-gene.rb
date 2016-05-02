@@ -14,9 +14,9 @@ def main
       genes[gene][:SYN] = 0
     end
     
-    if type == "LOF"
+    if type == "LOF" or type == "LGD"
       genes[gene][:LGD] += 1
-    elsif type == "DMIS" 
+    elsif type == "DMIS" or type == "D-mis" 
       genes[gene][:DMIS] += 1
       genes[gene][:MIS] += 1
     elsif type == "MIS"
