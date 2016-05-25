@@ -16,10 +16,10 @@ def main
     
     if type == "LOF" or type == "LGD"
       genes[gene][:LGD] += 1
-    elsif type == "DMIS" or type == "D-mis" 
+    elsif type == "DMIS" or type == "D-mis" or type =="D-mis\/meta" 
       genes[gene][:DMIS] += 1
       genes[gene][:MIS] += 1
-    elsif type == "MIS"
+    elsif type == "MIS" or type == "B-mis" or type == "D-mis\/PP2CADD"
       genes[gene][:MIS] += 1
     elsif type == "silent"
       genes[gene][:SYN] += 1
