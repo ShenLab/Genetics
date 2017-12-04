@@ -68,7 +68,9 @@ fitReadCounts <- function(a) {
 	z  = x[x$pvalues < 0.005, ]
 ## plot 
 
-	plot(a$ref + a$alt, a$alt/ (a$alt+a$ref),  xlab = "DP", ylab="alt fraction", pch=21)
+
+
+	plot(a$ref + a$alt, a$alt/ (a$alt+a$ref),  xlab = "DP", ylab="alt fraction", pch=20, ylim=range(c(0.05, 0.95)))
 
 # smoothScatter(a$ref + a$alt, a$alt/ (a$alt+a$ref),  xlab = "DP", ylab="alt fraction")
 
@@ -106,11 +108,13 @@ fitReadCounts <- function(a) {
 	lines(1:mn, ci[,2]/ci[,3], col='red')
 	abline(h=mp, col='blue')
 
-# 	text(z$N, z$alt/z$N, label = z$gene, col='blue', cex=0.6, adj=-0.2)
+ #	text(z$N, z$alt/z$N, label = z$type, col='blue', cex=0.8, adj=-0.2)
 
 	# write.table(z, "genes.p.lt.0.005.txt", quote=F)
 # 	return(mtheta)
-	return(results)
+
+#	return(results)
+	return(x)
 }
 
 
