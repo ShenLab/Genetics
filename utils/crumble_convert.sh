@@ -19,4 +19,6 @@ samtools index $cram
 samtools flagstat $cram > $cram.flagstat
 
 g=`diff $bam.flagstat $cram.flagstat`
-echo $g
+if [[ ! $g == "" ]]; then
+    echo "$bam and $cram do not match"
+fi

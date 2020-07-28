@@ -9,6 +9,8 @@ hs37d5=`grep -c hs37d5 $bam.refinfo`
 chr=`grep -c chr $bam.refinfo`
 ebv=`grep -c NC_007605 $bam.refinfo`
 chr1hg19=`grep -c LN\:249250621 $bam.refinfo`
+chr1hg38=`grep -c LN\:248956422 $bam.refinfo`
+
 # echo $chr1hg19
 # echo $chr
 
@@ -16,6 +18,8 @@ if [[ $chr1hg19 == "1" && $chr == "0" ]]; then
     echo "$bam    hs37d5"   ### hs37d5, decoy patch for hg19, used by RGN
 elif [[ $chr1hg19 == "1" && $chr != "0" ]]; then
     echo "$bam    ucsc_hg19"
+elif [[ $chr1hg38 == "1" && $chr != "0" ]]; then
+    echo "$bam    ucsc_hg38"
 else
     echo "$bam    other"
 fi
