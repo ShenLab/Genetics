@@ -44,6 +44,7 @@ def main
   $stderr.puts "not covered: " + notCovered.length.to_s
   snps = findMaxSpan(samples, markers, notCovered, minSet, settings["--minSpan"])
   $stderr.puts snps
+  puts snps.length
 end
 
 def loadVCF(vcf)
@@ -72,6 +73,8 @@ def loadVCF(vcf)
   #     line = vio.gets(sep="\n")
   while line = vio.gets(sep="\n")
 #    $stderr.puts line
+
+#
     if line.match("^#CHROM") 
 #      $stderr.puts line
       cols = line.chomp.split(/\s+/)
@@ -108,7 +111,7 @@ def loadVCF(vcf)
 
 #       format = cols[8].split(':')
       
-	  puts s[:id] + "\t" + s[:nhet].to_s
+	  # puts s[:id] + "\t" + s[:nhet].to_s
 
      
       
@@ -146,6 +149,8 @@ def loadVCF(vcf)
 end
 
 def countHet(genotypes) 
+
+#
   nhet = 0
 
   genotypes.each do |gt|
@@ -160,10 +165,10 @@ end
 def findMaxSpan(samples, markers, notCovered, minSet, minSpan)
 
 
-  $stderr.puts "remaining N of SNPs: " + markers.keys.size.to_s
+#   $stderr.puts "remaining N of SNPs: " + markers.keys.size.to_s
   totalSize = samples.keys.size
   topSNP = markers.keys.sort_by {|pos| markers[pos][:nhet]}.reverse[0]
-  $stderr.puts "top SNP: " + topSNP + ": " + markers[topSNP][:nhet].to_s
+  $stderr.puts "top SNP: " + topSNP + ", covering " + markers[topSNP][:nhet].to_s + " samples"
   #	notCovered = []
   #	if SNPs[topSNP][:nhet] > 0
   
@@ -180,7 +185,7 @@ def findMaxSpan(samples, markers, notCovered, minSet, minSpan)
     end
     
   end
-  $stderr.puts notCovered.size.to_s + "->" + newTBD.size.to_s
+  $stderr.puts "samples to be covered:" + notCovered.size.to_s + "->" + newTBD.size.to_s
     
   if newTBD.size < notCovered.size 
     minSet << topSNP
