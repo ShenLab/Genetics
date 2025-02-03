@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source $HOME/code/pipeline_settings_hg19.sh
+source $HOME/code/Genetics/pipeline_settings_hg19.sh
 
 bam=$1
 cram=`echo $bam | rev |cut -d '.' -f2-  | rev`".cram"

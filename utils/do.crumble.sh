@@ -3,16 +3,16 @@
 list=$1
 ref=$2
 
-
 for f in `cat $list`
 do 
-    g=`bash crumble_convert.sh $f $ref`
+    echo "working on $f"
+    bash $HOME/code/Genetics/utils/crumble_convert.sh $f $ref
 
-    if [[ $g == "" ]]; then
-	echo "$f is converted to cram format by crumble"
-        echo "" > $f   # remove the content of the original BAM file to save disk space
-    else
-        echo "$f is kept intact because the new cram file does not have the same flagstat"
-    fi    
+#    if [[ $g == "" ]]; then
+#	echo "$f is converted to cram format by crumble"
+#        echo "" > $f   # remove the content of the original BAM file to save disk space
+#    else
+#        echo "$f is kept intact because the new cram file does not have the same flagstat"
+#    fi    
 
 done

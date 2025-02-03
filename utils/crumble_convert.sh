@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 bam=$1
 REF=$2
 
@@ -12,6 +11,10 @@ if [[ ! -e $bam.flagstat ]]; then
 	samtools flagstat $bam > $bam.flagstat
 fi	
 
+if [[ ! -e $bam.bai ]]; then
+	samtools index $bam
+fi
+
 cram=`echo $bam | rev |cut -d '.' -f2-  | rev`".cram"
 
 crumble -9 -O cram,reference=$REF $bam $cram
@@ -19,6 +22,10 @@ samtools index $cram
 samtools flagstat $cram > $cram.flagstat
 
 g=`diff $bam.flagstat $cram.flagstat`
-if [[ ! $g == "" ]]; then
+fs=`ls -l $cram.flagstat | awk '{print $5}'`
+if [[ $g != "" || $fs == "0" ]]; then
     echo "$bam and $cram do not match"
+else	
+    echo "" > $bam
+    echo "" > $bam.bai
 fi

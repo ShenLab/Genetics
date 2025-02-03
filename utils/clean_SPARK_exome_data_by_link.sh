@@ -20,11 +20,11 @@ do
     echo $f1 $f2
 
     ## replace by a link
-   #  rm -rf $f2
-   #  ln -s $f1 $f2 
-   ### g=`echo $f2 | sed 's/cram$/crai/'`
-   #  rm -rf $g
-   #  ln -s $f1.crai $f2.crai
+    rm -rf $f2
+    ln -s $f1 $f2 
+    g=`echo $f2 | sed 's/cram$/crai/'`
+    rm -rf $g
+    ln -s $f1.crai $f2.crai
     
  fi	
 
