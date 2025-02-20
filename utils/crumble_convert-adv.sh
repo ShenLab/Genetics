@@ -23,11 +23,6 @@ if [[ -e $cram ]]; then ## cram already exist
 	exit
 fi
 
-if [[ ! -e $bam.bai ]]; then  ## can't find bai means bam is bad
-	echo "the $bam is likely damaged. exiting"
-	exit
-fi
-
 crumble -9 -O cram,reference=$REF $bam $cram
 samtools index $cram
 samtools flagstat $cram > $cram.flagstat
@@ -38,6 +33,4 @@ if [[ $g != "" || $fs == "0" ]]; then
     echo "$bam and $cram do not match"
 else	
     echo "successfully converted bam to cram $bam"
-    echo "" > $bam
-    echo "" > $bam.bai
 fi
