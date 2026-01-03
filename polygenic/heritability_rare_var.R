@@ -37,7 +37,7 @@ i = 1
 for (mr in x) {
 	RRm[i] = (m1 - m0) / mr + 1 
 	b = mean_from_z_p(1, z, 1 - (1 - pnorm(z,0,1) ) * RRm[i])
-	h2m[i] = 2 * b^2 /(1+b^2/2)
+	h2m[i] = 2 * b^2 
 	i = i + 1
 
 }
@@ -55,8 +55,9 @@ i = 1
 for (mr in y) {
 	RRl[i] = (n1 - n0) / mr + 1 
 	b = mean_from_z_p(1, z, 1 - (1 - pnorm(z,0,1) ) * RRl[i])
-	h2l[i] = 2 * b^2 /(1+b^2/2)
+	h2l[i] = 2 * b^2 
 	i = i + 1
 
 }
+
 
