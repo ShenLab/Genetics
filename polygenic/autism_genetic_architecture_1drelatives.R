@@ -6,10 +6,23 @@
 
 ## how to simulate assortative mating? 
 
+### jan 2026: 
+##  treat ultra-rare variants risk as discrete liability
+##  model total genetic liability as the sum of two normal dist: polygenic and oligogenic
+##  with polygenic have a negative mean, and oligenic have a positive mean. 
+##  parameters:  
+#  pi: fraction of h2 by oligogenic rare variant risk. 
+#  1 - pi: fraction of h2 by common polygenic risk
+#  rm: mean liability of rare variants
+## -1 * rm:  mean liability of common variants
+
+# heritability per variant: 2*f*(1-f)*b^2
+#  r0: average number of 
+#  b: average effect size of rare variants
 
 
 
-firstDegree  <- function(h2 = 0.8, z = 2, s_max_m = 0.99, s_max_f = 0.66, k = 2) {
+firstDegree  <- function(h2 = 0.8, z = 2, pi = 0.4,  s_max_m = 0.99, s_max_f = 0.66, k = 2) {
 
 	### Results: 
 	## 1.  mean genetic liability of siblings
@@ -28,8 +41,9 @@ firstDegree  <- function(h2 = 0.8, z = 2, s_max_m = 0.99, s_max_f = 0.66, k = 2)
 	N = 5000000
 	  
 	# parents from random population, p1: fathers, p2: mothers
-	p1g = rnorm(N, 0, h2^0.5) 
-	p2g = rnorm(N, 0, h2^0.5)
+	p1gpoly = rnorm(N, 0, (h2*pi)^0.5) 
+	p2gpoly = rnorm(N, 0, (h2*pi)^0.5)
+	p1golig = 
 	p1e = rnorm(N, 0, (1-h2)^0.5)
 	p2e = rnorm(N, 0, (1-h2)^0.5)
 	
