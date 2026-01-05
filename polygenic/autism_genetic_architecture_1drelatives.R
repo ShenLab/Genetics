@@ -1,8 +1,11 @@
-# Genetic risks in families
+#Genetic risks in families
 #
-#Questions:
-#	1.	given heritability (h2) and fitness impact (S) of a binary condition, eg autism, what is the chance of parents being affected in randomly ascertained families with affected children?  i.e., Prob(affected parents | child is affected, h2, S)?
-#	2.	Given the prevalence of the condition, and h2, S, what is the distribution of genetic load in unaffected parents of affected children or affected parents?
+#Questions: 1.	given heritability (h2) and fitness impact (S) of a binary
+#condition, eg autism, what is the chance of parents being affected in randomly
+#ascertained families with affected children?  i.e., Prob(affected parents |
+#child is affected, h2, S)? 2.	Given the prevalence of the condition, and h2, S,
+#what is the distribution of genetic load in unaffected parents of affected
+#children or affected parents?
 
 ## how to simulate assortative mating? 
 
@@ -22,7 +25,7 @@
 
 
 
-firstDegree  <- function(h2 = 0.8, z = 2, pi = 0.4,  s_max_m = 0.99, s_max_f = 0.66, k = 2) {
+firstDegree  <- function(h2 = 0.8, z = 2, pi = 0.4, s_max_m = 0.99, s_max_f = 0.66, k = 2) {
 
 	### Results: 
 	## 1.  mean genetic liability of siblings
