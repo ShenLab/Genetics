@@ -7,7 +7,7 @@ pi= 0.8  ## fraction of h2 by polygenic risk
 
 N=20000
 
-firstGen <- function() {
+## firstGen <- function() {
 
 
 no = 8000  ## choice of rare risk loci (binned by genes)
@@ -31,22 +31,27 @@ oligo = rtruncnorm(no, a=-0.1, b=2, mean=0, sd=so)
 
 #oligo = rnorm(no, 0, so)
 
+## polygenic risk for each individual 
 gp = rnorm(N, 0, sp)
 
+## total oligogenic risk for each indivdual 
 go = rep(0, N)
-co = matrix(0, nrow=N, ncol=no)
+
+## individual risk rare variants for each individual 
+oligoInd <- vector("list", N)
+
 for (i in 1:N) {
 #  co[i,] <- runif(no) < fo
   nr = rpois(1, no * fo)
- 
-  go[i] = sum(sample(oligo, nr))  # Poisson sampling
+  oligoInd[[i]] = sample(oligo, nr)  # Poisson sampling
+  go[i] = sum(oligoInd[[i]]) 
   
 }
 
 g = gp + go
 
-#var(oligo)
-# var(go)
+var(oligo)
+var(go)
 
 
-}
+## }
